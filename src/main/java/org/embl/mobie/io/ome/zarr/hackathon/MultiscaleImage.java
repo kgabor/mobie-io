@@ -82,6 +82,8 @@ public class MultiscaleImage< T extends NativeType< T > & RealType< T >, V exten
 
 	private int multiscaleArrayIndex = 0; // TODO (see comments within code)
 
+	private DataType dataType;
+
 	/**
 	 * TODO
 	 */
@@ -141,7 +143,8 @@ public class MultiscaleImage< T extends NativeType< T > & RealType< T >, V exten
 			// metadata.
 			final DatasetAttributes attributes = n5ZarrReader.getDatasetAttributes( datasets[ 0 ].path );
 			dimensions = attributes.getDimensions();
-			initTypes( attributes.getDataType() );
+			dataType = attributes.getDataType();
+			initTypes( dataType );
 
 			// Initialize the images for all resolutions.
 			//
@@ -235,6 +238,11 @@ public class MultiscaleImage< T extends NativeType< T > & RealType< T >, V exten
 	{
 		init();
 		return vimgs[ resolutionLevel ];
+	}
+
+	public DataType getDataType()
+	{
+		return dataType;
 	}
 
 	public T getType()
