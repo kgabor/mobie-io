@@ -119,6 +119,11 @@ public class Multiscales
         return axisList;
     }
 
+    /**
+     * Get the global coordinate transformations.
+     *
+     * @return CoordinateTransformations[]
+     */
     public CoordinateTransformations[] getCoordinateTransformations()
     {
         return coordinateTransformations;
