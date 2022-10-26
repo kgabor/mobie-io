@@ -58,6 +58,8 @@ import org.janelia.saalfeldlab.n5.zarr.N5ZarrReader;
 
 import javax.annotation.Nullable;
 
+import java.util.ArrayList;
+
 import static org.embl.mobie.io.ome.zarr.util.OmeZarrMultiscales.MULTI_SCALE_KEY;
 
 public class MultiscaleImage< T extends NativeType< T > & RealType< T >, V extends Volatile< T > & NativeType< V > & RealType< V > >
@@ -83,6 +85,10 @@ public class MultiscaleImage< T extends NativeType< T > & RealType< T >, V exten
 	private int multiscaleArrayIndex = 0; // TODO (see comments within code)
 
 	private DataType dataType;
+
+	private long[][] multiDimensions;
+
+	private DataType[] multiDataType;
 
 	/**
 	 * TODO
@@ -141,9 +147,17 @@ public class MultiscaleImage< T extends NativeType< T > & RealType< T >, V exten
 			// Set the dimensions and data type
 			// from the highest resolution dataset's
 			// metadata.
-			final DatasetAttributes attributes = n5ZarrReader.getDatasetAttributes( datasets[ 0 ].path );
-			dimensions = attributes.getDimensions();
-			dataType = attributes.getDataType();
+
+			multiDimensions = new long[numResolutions][];
+			multiDataType = new DataType[numResolutions];
+
+			for (int resolution = numResolutions-1; resolution >= 0; --resolution) {
+				final DatasetAttributes attributes = n5ZarrReader.getDatasetAttributes(datasets[resolution].path);
+				multiDimensions[resolution] = attributes.getDimensions();
+				multiDataType[resolution] = attributes.getDataType();
+			}
+			dimensions = multiDimensions[0];
+			dataType = multiDataType[0];
 			initTypes( dataType );
 
 			// Initialize the images for all resolutions.
@@ -234,6 +248,11 @@ public class MultiscaleImage< T extends NativeType< T > & RealType< T >, V exten
 		return imgs[ resolutionLevel ];
 	}
 
+	public long[] getDimensions(final int level)
+	{
+		return multiDimensions[level];
+	}
+
 	public RandomAccessibleInterval< V > getVolatileImg( final int resolutionLevel )
 	{
 		init();
@@ -269,7 +288,8 @@ public class MultiscaleImage< T extends NativeType< T > & RealType< T >, V exten
 
 	public static void main( String[] args )
 	{
-		final String multiscalePath = "/data1/gkovacs/davidf_sample_dataset/SmartSPIM_617052_sample.zarr";
+		//final String multiscalePath = "/data1/gabor.kovacs/davidf_sample_dataset/SmartSPIM_617052_sample.zarr";
+		final String multiscalePath = "/home/gabor.kovacs/data/davidf_sample_dataset/SmartSPIM_617052_sample.zarr";
 
 		final MultiscaleImage< ?, ? > multiscaleImage = new MultiscaleImage<>( multiscalePath, null );
 		multiscaleImage.dimensions();
