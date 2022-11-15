@@ -95,6 +95,8 @@
 
         <!-- NB: Deploy releases to the SciJava Maven repository. -->
         <releaseProfiles>sign,deploy-to-scijava</releaseProfiles>
+        <jna.version>5.11.0</jna.version>
+        <scijava.surefire.args>-Djna.library.path="/opt/homebrew/Cellar/c-blosc/1.21.1/lib"</scijava.surefire.args>
     </properties>
 
     <build>
@@ -123,7 +125,8 @@
         <dependency>
             <groupId>org.janelia.saalfeldlab</groupId>
             <artifactId>n5-zarr</artifactId>
-            <version>0.0.7</version>
+            <version>0.0.9-SNAPSHOT</version>
+<!--            <scope>system</scope>-->
         </dependency>
         <dependency>
             <groupId>net.imglib2</groupId>
@@ -219,6 +222,10 @@
             <artifactId>everit-json-schema</artifactId>
             <version>1.14.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>sc.fiji</groupId>
+            <artifactId>bigdataviewer-vistools</artifactId>
         </dependency>
     </dependencies>
 </project>

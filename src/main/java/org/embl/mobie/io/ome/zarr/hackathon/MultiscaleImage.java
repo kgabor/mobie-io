@@ -289,8 +289,8 @@ public class MultiscaleImage< T extends NativeType< T > & RealType< T >, V exten
 	public static void main( String[] args )
 	{
 		//final String multiscalePath = "/data1/gabor.kovacs/davidf_sample_dataset/SmartSPIM_617052_sample.zarr";
-		final String multiscalePath = "/home/gabor.kovacs/data/davidf_sample_dataset/SmartSPIM_617052_sample.zarr";
-
+//		final String multiscalePath = "/home/gabor.kovacs/data/davidf_sample_dataset/SmartSPIM_617052_sample.zarr";
+		final String multiscalePath = "/Users/kgabor/data/davidf_sample_dataset/SmartSPIM_617052_sample.zarr";
 		final MultiscaleImage< ?, ? > multiscaleImage = new MultiscaleImage<>( multiscalePath, null );
 		multiscaleImage.dimensions();
 
